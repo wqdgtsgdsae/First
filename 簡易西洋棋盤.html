@@ -1,0 +1,370 @@
+<html>
+  <head>
+    <!--github-->
+    <!--wqdgtsgdsae-->
+    <!--your repositories-->
+    <!--settings-->
+    <!--pages-->
+    <!--branch-->
+    <!--none==>main-->
+    <meta charset="utf-8">
+    <title>自己亂</title>
+    
+<!----><style>
+          #棋盤{
+            width: 561px;
+            height: 561px;
+            background: url("棋盤.png");
+            display: none;
+            position: relative;
+            z-index: -1;
+          }
+
+          #角色{
+            width: 49px;
+            height: 49px;
+            margin: 10px;
+            left: 280px;
+            top: 490px;
+            border: 1px black solid;
+            border-radius: 50%;
+            background: black ;
+            /* url("KING.png");*/
+            display: none;
+            z-index: 10;
+            position: absolute;
+          }
+
+          #敵人{
+            width: 49px;
+            height: 49px;
+            margin: 10px;
+            left: 280px;
+            top: 489px;
+            border: 1px red solid;
+            border-radius: 50%;
+            background: white ;
+            display: none;
+            z-index: 10;
+            position: absolute;
+          }
+  
+          #介面{
+            width: 560px;
+            height: 20px;
+            border: black 1px solid;
+            display:block;
+            position: relative;
+            display: none;
+          }
+
+          #HP {
+            width: 560px;
+            height: 10px;
+            background:#56bf02;      /*color picker*/
+            position: absolute;
+            top:5px;
+            border-radius:4px;
+            z-index: 3;
+            display: inline-block;
+            transition:width 0.5s;
+          }
+
+          #HPgray{
+            width: 560px;
+            height: 10px;
+            background: #d2d2d2;
+            position: absolute;
+            top:5px;
+            border-radius:4px;
+            z-index: 1;
+            display: inline-block;
+          }
+
+         #HPred{
+           width: 560px;
+           height: 10px;
+           background: #ff0000;
+           position: absolute;
+           top:5px;
+           border-radius:4px;
+           z-index: 2;
+           display: inline-block;
+           transition:width 2s;
+         }
+
+        #skill{
+          width: 560px;
+          height: 80px;
+          border: 1px black solid;
+          background: white;
+          z-index: 100;
+          display: none;
+        }
+  
+        #skill-attack{
+          width: 80px;
+          height: 80px;
+          background: url("skill-attack.png");
+          border: 1px black solid;
+        }
+
+        #attack{
+          width: 209px;
+          height: 209px;
+          margin: -81px;
+          border: 1px red solid;
+          z-index: 8;
+        }
+
+       #skill-上{
+         width: 80px;
+         height: 80px;
+         background: url("skill上.jpg");
+         position: absolute;
+         top:592px;
+         left: 90px;
+         border: 1px black solid;
+        }
+
+      #skill-下{
+       width: 80px;
+       height: 80px;
+       background: url("skill下.jpg");
+       position: absolute;
+       top:592px;
+       left: 170px;
+       border: 1px black solid;
+      }
+
+      #skill-左{
+       width: 80px;
+       height: 80px;
+       background: url("skill左.jpg");
+       position: absolute;
+       top:592px;
+       left: 250px;
+       border: 1px black solid;
+      }
+
+      #skill-右{
+       width: 80px;
+       height: 80px;
+       background: url("skill右.jpg");
+       position: absolute;
+       top:592px;
+       left: 330px;
+       border: 1px black solid;
+      }
+  
+        #行動點{
+          display: none;
+        }
+
+        #end{
+          border: 10px lightgray solid;
+          background: gray;
+          position: absolute;
+          width: 157px;
+          height: 65px;
+          left: 412px;
+          top: 600px;
+          display: none;
+        }
+  /* get("角色").style.left=x;
+   點--;
+   get("行動點").innerHTML="行動點:"+點;*/
+      #gameover{
+        display: none;
+      }
+   #kills{
+     display: none;
+   }
+        
+/*----*/</style>
+    
+<!----><script>
+          function get(x){
+           return document.getElementById(x);
+          }
+
+          function getRnd(min,max) {
+            return Math.floor(Math.random()*(max-min))+min;
+          }
+
+          function 開始() {
+            get("介面").style.display="block";
+            get("棋盤").style.display="block";
+            get("角色").style.display="block";
+            get("敵人").style.display="block";
+            die=0;
+            kill=0;
+            get("Start").style.display="none";
+            get("skill").style.display="block";
+            get("end").style.display="block";
+            get("行動點").style.display="block";
+            heart=560;
+            x=getRnd(0,8)*70;
+            y=getRnd(0,8)*70;
+            a=getRnd(0,8)*70;
+            b=getRnd(0,8)*70;
+            get("角色").style.left=x;
+            get("角色").style.top=y;
+              if (x != a || y != b){
+            get("敵人").style.left=a;
+            get("敵人").style.top=b;
+            }else{
+                a=getRnd(0,8)*70;
+                b=getRnd(0,8)*70;
+                if (x != a || y != b){
+                get("敵人").style.left=a;
+                get("敵人").style.top=b;
+                }else{
+                    a=getRnd(0,8)*70;
+                    b=getRnd(0,8)*70;
+                }
+            }
+/*--------------------------------------------------------*/
+            點=4;
+             /*行動點數="行動點:"+點;*/
+             get("行動點").innerHTML="行動點:"+點/*行動點數*/;
+          }
+  
+          function att(){
+            if (點 >= 1){
+              get("attack").style.left=get("角色").style.left;
+              get("attack").style.top=get("角色").style.top;
+              if(a==x-70 && b==y-70){get("敵人").style.display="none"; die=1; kill++}
+              if(a==x && b==y-70){get("敵人").style.display="none"; die=1; kill++}
+              if(a==x+70 && b==y-70){get("敵人").style.display="none"; die=1; kill++}
+              if(a==x+70 && b==y){get("敵人").style.display="none"; die=1; kill++}
+              if(a==x+70 && b==y+70){get("敵人").style.display="none"; die=1; kill++}
+              if(a==x && b==y+70){get("敵人").style.display="none"; die=1; kill++}
+              if(a==x-70 && b==y+70){get("敵人").style.display="none"; die=1; kill++}
+              if(a==x-70 && b==y){get("敵人").style.display="none"; die=1; kill++}
+              點--;
+              get("行動點").innerHTML="行動點:"+點;
+            }
+          }
+
+         function 上(){
+           if (點 >= 1 && y>0){
+             if (!(x == a && y == b+70)){
+               y=y-70;
+                get("角色").style.top=y;
+                點--;
+                get("行動點").innerHTML="行動點:"+點;
+             }
+           }
+         }
+
+        function 下(){
+           if (點 >= 1 && y<490){
+             if (!(x == a && y == b-70)){
+                y=y+70;
+                 get("角色").style.top=y;
+                 點--;
+                 get("行動點").innerHTML="行動點:"+點;
+              }
+           }
+         }
+
+        function 左(){
+           if (點 >= 1 && x>0){
+             if (!(x == a+70 && y == b)){
+                x=x-70;
+                 get("角色").style.left=x;
+                 點--;
+                 get("行動點").innerHTML="行動點:"+點;
+              }
+           }
+         }
+
+        function 右(){
+           if (點 >= 1 && x<490){
+             if (!(x == a-70 && y == b)){
+                x=x+70;
+                 get("角色").style.left=x;
+                 點--;
+                 get("行動點").innerHTML="行動點:"+點;
+              }
+           }
+         }
+        function 結束回合(){
+          if (die==0){
+            if (heart>15/100*560){
+              heart=heart-getRnd(15,35)/100*560;
+              get("HP").style.width=heart;
+              get("HPred").style.width=heart;
+            }else{
+              heart=0;
+              get("HP").style.width=0;
+              get("HPred").style.width=0;
+              get("介面").style.display="none";
+              get("棋盤").style.display="none";
+              get("角色").style.display="none";
+              get("敵人").style.display="none";
+              get("skill").style.display="none";
+              get("end").style.display="none";
+              get("行動點").style.display="none";
+              get("gameover").style.display="block";
+              get("kills").style.display="block";
+              get("kills").innerHTML="你擊敗了"+kill+"個敵人"
+            }
+            點=4;
+            die=0;
+            get("行動點").innerHTML="行動點:"+點;
+          }else{
+            die=0;
+            heart=heart+560*5/100;
+            get("HP").style.width=heart;
+            get("HPred").style.width=heart;
+            if(heart>=560){
+                    heart=560;
+                    get("HP").style.width=560;
+                    get("HPred").style.width=560;  
+                          }
+            a=getRnd(0,8)*70;
+            b=getRnd(0,8)*70;
+            get("敵人").style.display="block";
+            if (x != a || y != b){
+            get("敵人").style.left=a;
+            get("敵人").style.top=b;
+            }else{
+                a=getRnd(0,8)*70;
+                b=getRnd(0,8)*70;
+                if (x != a || y != b){
+                get("敵人").style.left=a;
+                get("敵人").style.top=b;
+                }else{
+                    a=getRnd(0,8)*70;
+                    b=getRnd(0,8)*70;
+                }
+            }
+            點=4;
+            get("行動點").innerHTML="行動點:"+點;
+          }
+        }
+/*----*/</script>
+  </head>
+  <!--給id只是為了用於控制 所以不用在上面找到對應的style-->
+  <body>
+    <button id="Start" onclick="開始();">Start</button>
+    
+    <div id="棋盤"><div id="角色"><div id="attack"></div></div><div id="敵人"></div></div>
+    
+    <div id="介面">
+      <div id="HP"></div><div id="HPred"></div><div id="HPgray"></div>
+    </div>
+    <div id="skill"><div onclick="att()" id="skill-attack"></div>
+                    <div onclick="上()" id="skill-上"></div>
+                    <div onclick="下()" id="skill-下"></div>
+                    <div onclick="左()" id="skill-左"></div>
+                    <div onclick="右()" id="skill-右"></div>
+    
+    </div>
+   <div id="行動點">行動點:0</div><button onclick="結束回合()" id="end">結束回合</button>
+    <div id="gameover">gameover</div>
+     <div id="kills">你擊敗了:</div>
+  </body>
+</html>
